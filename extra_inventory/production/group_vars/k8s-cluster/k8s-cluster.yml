@@ -167,7 +167,7 @@ resolvconf_mode: docker_dns
 # Deploy netchecker app to verify DNS resolve as an HTTP service
 deploy_netchecker: false
 # Ip address of the kubernetes skydns service
-skydns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(3)|ipaddr('address') }}"
+skydns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(10)|ipaddr('address') }}"
 skydns_server_secondary: "{{ kube_service_addresses|ipaddr('net')|ipaddr(4)|ipaddr('address') }}"
 dns_domain: "{{ cluster_name }}"
 
