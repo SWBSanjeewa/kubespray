@@ -14,6 +14,12 @@ packet_ubuntu18-calico-aio:
   extends: .packet
   when: on_success
 
+# Future AIO job
+packet_ubuntu20-calico-aio:
+  stage: deploy-part1
+  extends: .packet
+  when: manual
+
 # ### PR JOBS PART2
 
 packet_centos7-flannel-addons:
@@ -68,12 +74,17 @@ packet_ubuntu18-flannel-containerd:
   extends: .packet
   when: manual
 
+packet_ubuntu18-flannel-containerd-once:
+  stage: deploy-part2
+  extends: .packet
+  when: manual
+
 packet_debian9-macvlan-sep:
   stage: deploy-part2
   extends: .packet
   when: manual
 
-packet_debian9-calico-upgrade:
+packet_debian9-calico-upgrade-once:
   stage: deploy-part2
   extends: .packet
   when: on_success
@@ -86,6 +97,11 @@ packet_debian10-containerd:
   when: on_success
 
 packet_centos7-calico-ha:
+  stage: deploy-part2
+  extends: .packet
+  when: manual
+
+packet_centos7-calico-ha-once-localhost:
   stage: deploy-part2
   extends: .packet
   when: manual
@@ -125,8 +141,18 @@ packet_amazon-linux-2-aio:
   extends: .packet
   when: manual
 
+# ### PR JOBS PART3
+# Long jobs (45min+)
+
+packet_debian9-calico-upgrade:
+  stage: deploy-part3
+  extends: .packet
+  when: on_success
+  variables:
+    UPGRADE_TEST: graceful
+
 packet_ubuntu18-calico-ha-recover:
-  stage: deploy-part2
+  stage: deploy-part3
   extends: .packet
   when: on_success
   variables:
@@ -134,7 +160,7 @@ packet_ubuntu18-calico-ha-recover:
     RECOVER_CONTROL_PLANE_TEST_GROUPS: "etcd[2:],kube-master[1:]"
 
 packet_ubuntu18-calico-ha-recover-noquorum:
-  stage: deploy-part2
+  stage: deploy-part3
   extends: .packet
   when: on_success
   variables:

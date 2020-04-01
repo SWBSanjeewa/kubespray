@@ -57,7 +57,10 @@ following default cluster parameters:
 * *kube_pods_subnet* - Subnet for Pod IPs (default is 10.233.64.0/18). Must not
   overlap with kube_service_addresses.
 * *kube_network_node_prefix* - Subnet allocated per-node for pod IPs. Remaining
-  bits in kube_pods_subnet dictates how many kube-nodes can be in cluster.
+  bits in kube_pods_subnet dictates how many kube-nodes can be in cluster. Setting this > 25 will
+  raise an assertion in playbooks if the `kubelet_max_pods` var also isn't adjusted accordingly
+  (assertion not applicable to calico which doesn't use this as a hard limit, see
+  [Calico IP block sizes](https://docs.projectcalico.org/reference/resources/ippool#block-sizes).
 * *skydns_server* - Cluster IP for DNS (default is 10.233.0.3)
 * *skydns_server_secondary* - Secondary Cluster IP for CoreDNS used with coredns_dual deployment (default is 10.233.0.4)
 * *enable_coredns_k8s_external* - If enabled, it configures the [k8s_external plugin](https://coredns.io/plugins/k8s_external/)
@@ -104,6 +107,8 @@ Stack](https://github.com/kubernetes-sigs/kubespray/blob/master/docs/dns-stack.m
 * *docker_options* - Commonly used to set
   ``--insecure-registry=myregistry.mydomain:5000``
 * *docker_plugins* - This list can be used to define [Docker plugins](https://docs.docker.com/engine/extend/) to install.
+* *containerd_config* - Controls some parameters in containerd configuration file (usually /etc/containerd/config.toml).
+  [Default config](https://github.com/kubernetes-sigs/kubespray/blob/master/roles/container-engine/containerd/defaults/main.yml) can be overriden in inventory vars.
 * *http_proxy/https_proxy/no_proxy* - Proxy variables for deploying behind a
   proxy. Note that no_proxy defaults to all internal cluster IPs and hostnames
   that correspond to each node.

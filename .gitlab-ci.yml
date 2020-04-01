@@ -4,6 +4,7 @@ stages:
   - deploy-part1
   - moderator
   - deploy-part2
+  - deploy-part3
   - deploy-special
 
 variables:
@@ -39,7 +40,7 @@ before_script:
   tags:
     - packet
   variables:
-    KUBESPRAY_VERSION: v2.12.0
+    KUBESPRAY_VERSION: v2.12.5
   image: quay.io/kubespray/kubespray:$KUBESPRAY_VERSION
 
 .testcases: &testcases
@@ -53,7 +54,7 @@ before_script:
   script:
     - ./tests/scripts/testcases_run.sh
   after_script:
-    - ./tests/scripts/testcases_cleanup.sh
+    - chronic ./tests/scripts/testcases_cleanup.sh
 
 # For failfast, at least 1 job must be defined in .gitlab-ci.yml
 # Premoderated with manual actions
