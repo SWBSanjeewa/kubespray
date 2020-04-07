@@ -254,6 +254,7 @@
     - /var/lib/calico
     - /etc/cilium
     - /run/calico
+    - /etc/canal
   ignore_errors: yes
   tags:
     - files
